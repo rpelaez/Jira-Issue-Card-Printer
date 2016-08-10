@@ -22,7 +22,8 @@ Bengt
 ### Card Layout
 ![Card Layout](CardExample.png)
 
-### Installation
+## Installation
+### As Bookmarklet
 #### Drag'n'Drop
 got to [Instalation Site](https://qoomon.github.io/Jira-Issue-Card-Printer/bookmarkInstalation.html)
 
@@ -33,6 +34,8 @@ Create Bookmark with folowing content.
 ```
 javascript:(function(){ var script = document.createElement("script"); script.src = "https://qoomon.github.io/Jira-Issue-Card-Printer/bookmarklet.js"; document.body.appendChild(script); document.body.removeChild(script);})();
 ```
+### As Jira Plugin
+https://marketplace.atlassian.com/plugins/jiraissuecardprinter.jiraissuecardprinter/server/overview
 
 ### Usage
 Just select Issue(s) then run the Bookmarklet.
