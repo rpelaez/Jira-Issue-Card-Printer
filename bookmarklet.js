@@ -664,6 +664,7 @@
           issueData.type = data.fields.issuetype.name.toLowerCase();
           issueData.summary = data.fields.summary;
           issueData.description = data.renderedFields.description;
+          issueData.labels = "ADIOS!";
 
           if (data.fields.assignee) {
             issueData.assignee = data.fields.assignee.displayName;
@@ -1178,19 +1179,7 @@
        font-weight: bold;
        text-align: center;
      }
-     .issue-labels {
-       position: absolute;
-       left: 2.5rem;
-       top: 0.0rem;
-       height: 1.6rem;
-       width: 1.6rem;
-       border-radius: 50%;
-       background-color: WHITESMOKE;
-       line-height: 1.4rem;
-       font-size: 0.9rem;
-       font-weight: bold;
-       text-align: center;
-     }
+     
      .issue-qr-code {
        position: absolute;
        left: 0rem;
@@ -1258,6 +1247,10 @@
        max-width: 1rem;
      }
      .issue-epic-name {
+       font-size: 0.55rem;
+       font-weight: bold;
+     }
+     .issue-labels {
        font-size: 0.55rem;
        font-weight: bold;
      }
