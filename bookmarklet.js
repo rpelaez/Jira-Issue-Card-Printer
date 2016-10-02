@@ -679,6 +679,7 @@
 
           issueData.hasAttachment = data.fields.attachment.length > 0;
           issueData.estimate = data.fields.storyPoints;
+          issueData.labels = data.fields.labels;
 
           if (data.fields.parent) {
             promises.push(module.getIssueData(data.fields.parent.key).then(function(data) {
@@ -1073,10 +1074,7 @@
        font-weight: bold;
        font-size: 0.9rem;
      }
-     .issue-labels {
-       font-weight: bold;
-       font-size: 0.9rem;
-     }
+     
      .issue-description {
        margin-top: 0.1rem;
        display: block;
@@ -1168,6 +1166,19 @@
        background-image: url(https://rpelaez.github.io/Jira-Issue-Card-Printer/resources/icons/CrashDummy.png);
      }
      .issue-estimate {
+       position: absolute;
+       left: 2.5rem;
+       top: 0.0rem;
+       height: 1.6rem;
+       width: 1.6rem;
+       border-radius: 50%;
+       background-color: WHITESMOKE;
+       line-height: 1.4rem;
+       font-size: 0.9rem;
+       font-weight: bold;
+       text-align: center;
+     }
+     .issue-labels {
        position: absolute;
        left: 2.5rem;
        top: 0.0rem;
@@ -1334,7 +1345,7 @@
              <div class="ui-element checkbox" style="float: left;">
                <input id="single-card-page-checkbox" type="checkbox"/>
                <label for="single-card-page-checkbox"></label>
-               <label for="single-card-page-checkbox">One*Page</label>
+               <label for="single-card-page-checkbox">1xPage</label>
              </div>
              <div class="ui-element checkbox" style="float: left;">
                <input id="description-checkbox" type="checkbox"/>
