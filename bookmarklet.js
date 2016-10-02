@@ -1368,7 +1368,7 @@
              <div class="ui-element checkbox" style="float: left;">
                <input id="qr-code-checkbox" type="checkbox"/>
                <label for="qr-code-checkbox"></label>
-               <label for="qr-code-checkbox">QR Code</label>
+               <label for="qr-code-checkbox">QR</label>
              </div>
 
              <div id="card-print-dialog-print" class="ui-element button button-primary" >Print</div>
