@@ -920,9 +920,9 @@
          </div>
          <div class="card-header">
            <div class="author">
-             <span>MrAddon.com® based on</span>
+             <span>qoomon.com</span>
              <br>
-             <span>qoomon.com ©BengtBrodersen code</span>
+             <span>©BengtBrodersen</span>
            </div>
            <div class="issue-id badge"></div>
            <div class="issue-id-fadeout"></div>
