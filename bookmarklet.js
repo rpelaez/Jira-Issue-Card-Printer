@@ -1253,7 +1253,7 @@
      .issue-labels {
        font-size: 0.55rem;
        font-weight: bold;
-       max-width: 1rem;
+       max-width: 8rem;
        position: absolute;
        left: 4.5rem;
        top: 0rem;
@@ -1348,6 +1348,11 @@
                <input id="description-checkbox" type="checkbox"/>
                <label for="description-checkbox"></label>
                <label for="description-checkbo">Desc</label>
+             </div>
+             <div class="ui-element checkbox" style="float: left;">
+               <input id="reporter-checkbox" type="checkbox"/>
+               <label for="reporter-checkbox"></label>
+               <label for="reporter-checkbox">Reporter</label>
              </div>
              <div class="ui-element checkbox" style="float: left;">
                <input id="assignee-checkbox" type="checkbox"/>
