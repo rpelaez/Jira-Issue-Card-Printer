@@ -1253,6 +1253,10 @@
      .issue-labels {
        font-size: 0.55rem;
        font-weight: bold;
+       max-width: 1rem;
+       position: absolute;
+       left: 4.5rem;
+       top: 0rem;
      }
      .issue-due-date-box {
        position: absolute;
