@@ -7,7 +7,7 @@
   }
 
   var global = {};
-  global.version = "4.7.4-MRADDON";
+  global.version = "(4.7.4) 1.0.1";
   global.issueTrackingUrl = "github.com/rpelaez/Jira-Issue-Card-Printer";
 
   global.isDev = document.currentScript == null;
@@ -97,9 +97,9 @@
     // render cards
     promises.push(renderCards(issueKeyList));
 
-    $("#card-print-dialog-title", global.appFrame.document).text("Card Printer " + global.version + " - Loading issues...");
+    $("#card-print-dialog-title", global.appFrame.document).text("Issue Card Printer " + global.version + " - Loading issues...");
     return Promise.all(promises).then(function() {
-      $("#card-print-dialog-title", global.appFrame.document).text("Card Printer " + global.version);
+      $("#card-print-dialog-title", global.appFrame.document).text("Issue Card Printer " + global.version);
     });
   }
 
@@ -1563,7 +1563,7 @@
          <div id="card-print-dialog-header">
            <div id="card-print-dialog-title">Card Printer</div>
            <div id="info">
-             <label id="info-line"><b>Jira</b> - <b>Trello</b> - <b>YouTrack</b> - <b>PivotalTracker</b></label>
+             <label id="info-line"><b>MrAddon® - Issue Card Printer for Jira</b></label>
              <div id="report-issue" class="ui-element button" >Report Issues</div>
              <div id="about" class="ui-element button" >About</div>
            </div>
