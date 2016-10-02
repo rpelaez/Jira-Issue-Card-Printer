@@ -1352,12 +1352,12 @@
              <div class="ui-element checkbox" style="float: left;">
                <input id="reporter-checkbox" type="checkbox"/>
                <label for="reporter-checkbox"></label>
-               <label for="reporter-checkbox">Reporter</label>
+               <label for="reporter-checkbox">Report</label>
              </div>
              <div class="ui-element checkbox" style="float: left;">
                <input id="assignee-checkbox" type="checkbox"/>
                <label for="assignee-checkbox"></label>
-               <label for="assignee-checkbox">Assignee</label>
+               <label for="assignee-checkbox">Assig</label>
              </div>
              <div class="ui-element checkbox" style="float: left;">
                <input id="due-date-checkbox" type="checkbox"/>
@@ -1377,7 +1377,7 @@
              <div class="ui-element checkbox" style="float: left;">
                <input id="labels-checkbox" type="checkbox"/>
                <label for="labels-checkbox"></label>
-               <label for="labels-checkbox">Labels</label>
+               <label for="labels-checkbox">Label</label>
              </div>
              <div class="ui-element checkbox" style="float: left;">
                <input id="qr-code-checkbox" type="checkbox"/>
