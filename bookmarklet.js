@@ -1320,7 +1320,7 @@
                <input id="columnCount" type="number" min="0" max="9" class="numberInput" style="float: left; width: 18px; padding: 2px;" value="1"/>
                <div style="float: left; margin-left: 5px; margin-right: 5px;">x</div>
                <input id="rowCount" type="number" min="0" max="9" class="numberInput" style="float: left; width: 18px; padding: 2px;" value="2"/>
-               <label style="float: left; margin-left:5px;">Page Grid</label>
+               <label style="float: left; margin-left:5px;">Grid</label>
              </div>
              <div class="ui-element" style="float: left;">
                <form style="float: left;" oninput="amount.value=parseFloat(scaleRange.value).toFixed(1)">
@@ -1334,7 +1334,7 @@
              <div class="ui-element checkbox" style="float: left;">
                <input id="single-card-page-checkbox" type="checkbox"/>
                <label for="single-card-page-checkbox"></label>
-               <label for="single-card-page-checkbox">Single Card Per Page</label>
+               <label for="single-card-page-checkbox">One*Page</label>
              </div>
              <div class="ui-element checkbox" style="float: left;">
                <input id="description-checkbox" type="checkbox"/>
