@@ -735,7 +735,7 @@
           issueData.estimate = data.fields.storyPoints;
           issueData.labels = data.fields.labels.toString();
           if ( data.fields.components) {
-          	issueData.components = data.fields.components["name"].toString();
+          	issueData.components = data.fields.components;
           } else {
             issueData.components = null; 
           }
