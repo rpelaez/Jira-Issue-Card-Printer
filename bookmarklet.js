@@ -1251,11 +1251,11 @@
        font-weight: bold;
      }
      .issue-labels {
-       font-size: 0.55rem;
+       font-size: 0.6rem;
        font-weight: bold;
-       max-width: 8rem;
+       max-width: 10rem;
        position: absolute;
-       left: 4.5rem;
+       left: 5rem;
        top: 0rem;
      }
      .issue-due-date-box {
