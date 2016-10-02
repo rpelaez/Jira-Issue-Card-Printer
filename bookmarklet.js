@@ -7,7 +7,7 @@
   }
 
   var global = {};
-  global.version = "1.7.1 (4.7.4)";
+  global.version = "1.1 (4.7.4)";
   global.issueTrackingUrl = "github.com/rpelaez/Jira-Issue-Card-Printer";
 
   global.isDev = document.currentScript == null;
@@ -97,7 +97,7 @@
     // render cards
     promises.push(renderCards(issueKeyList));
 
-    $("#card-print-dialog-title", global.appFrame.document).text("Issue Card Printer for JIRA " + global.version + " - Loading issues...");
+    $("#card-print-dialog-title", global.appFrame.document).text("MrAddon® " + global.version + " - Loading...");
     return Promise.all(promises).then(function() {
       $("#card-print-dialog-title", global.appFrame.document).text("Issue Card Printer for JIRA " + global.version);
     });
