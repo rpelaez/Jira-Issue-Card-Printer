@@ -739,8 +739,8 @@
           issueData.hasAttachment = data.fields.attachment.length > 0;
           issueData.estimate = data.fields.storyPoints;
           issueData.labels = data.fields.labels.toString();
-          if ( data.fields.components.name) {
-          	issueData.components = data.fields.components.name.toString;
+          if ( data.fields.components) {
+          	issueData.components = data.fields.components[0].name;
           } else {
             issueData.components = null; 
           }
@@ -1407,8 +1407,8 @@
          <div id="card-print-dialog-header">
            <div id="card-print-dialog-title">Card Printer</div>
            <div id="info">
-             <label id="info-line"><b>MrAddon® - Issue Card Printer for Jira</b></label>
-             <div id="report-issue" class="ui-element button" >Report Issues</div>
+             <label id="info-line"><b>MrAddon® Issue Card Printer for Jira</b></label>
+             <div id="report-issue" class="ui-element button" >Support</div>
              <div id="about" class="ui-element button" >MrAddon</div>
              <div id="qoomon" class="ui-element button" >Qoomon</div>
            </div>
