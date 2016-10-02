@@ -940,7 +940,7 @@
              <span class="issue-epic-id"></span><br>
              <span class="issue-epic-name"></span>
            </div>
-            Label:<span class="issue-labels"></span>
+           <span class="issue-labels"></span>
          </div>
        </div>
      </div>
