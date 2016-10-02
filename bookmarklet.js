@@ -734,7 +734,7 @@
           issueData.hasAttachment = data.fields.attachment.length > 0;
           issueData.estimate = data.fields.storyPoints;
           issueData.labels = data.fields.labels.toString();
-          issueData.components = data.fields.components.toString();
+          issueData.components = data.fields.components.name.toString();
 
           if (data.fields.parent) {
             promises.push(module.getIssueData(data.fields.parent.key).then(function(data) {
