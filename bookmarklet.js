@@ -1362,7 +1362,12 @@
              <div class="ui-element checkbox" style="float: left;">
                <input id="estimate-checkbox" type="checkbox"/>
                <label for="estimate-checkbox"></label>
-               <label for="estimate-checkbox">Estimate</label>
+               <label for="estimate-checkbox">Points</label>
+             </div>
+             <div class="ui-element checkbox" style="float: left;">
+               <input id="components-checkbox" type="checkbox"/>
+               <label for="components-checkbox"></label>
+               <label for="components-checkbox">Component</label>
              </div>
              <div class="ui-element checkbox" style="float: left;">
                <input id="labels-checkbox" type="checkbox"/>
