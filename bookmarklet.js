@@ -7,7 +7,7 @@
   }
 
   var global = {};
-  global.version = "(4.7.4) 1.4.1";
+  global.version = "(4.7.4) 1.5.1";
   global.issueTrackingUrl = "github.com/rpelaez/Jira-Issue-Card-Printer";
 
   global.isDev = document.currentScript == null;
@@ -468,6 +468,11 @@
 
     result.find("#about").click(function(event) {
       window.open('http://www.mraddon.com');
+      return false;
+    });
+    
+    result.find("#qoomon").click(function(event) {
+      window.open('http://qoomon.blogspot.com.es/2014/01/jira-issue-card-printer-bookmarklet.html');
       return false;
     });
 
@@ -980,7 +985,7 @@
            <div class="author">
              <span>Qoomon.com & MrAddon.com</span>
              <br>
-             <span>©BengtBrodersen/®RaulPelaez</span>
+             <span>©BengtBrodersen / ®RaulPelaez</span>
            </div>
            <div class="issue-id badge"></div>
            <div class="issue-id-fadeout"></div>
@@ -1404,7 +1409,8 @@
            <div id="info">
              <label id="info-line"><b>MrAddon® - Issue Card Printer for Jira</b></label>
              <div id="report-issue" class="ui-element button" >Report Issues</div>
-             <div id="about" class="ui-element button" >About</div>
+             <div id="about" class="ui-element button" >MrAddon</div>
+             <div id="qoomon" class="ui-element button" >Qoomon</div>
            </div>
          </div>
          <div id="card-print-dialog-content">
