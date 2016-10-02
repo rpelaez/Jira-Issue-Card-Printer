@@ -7,7 +7,7 @@
   }
 
   var global = {};
-  global.version = "(4.7.4) 1.0.1";
+  global.version = "(4.7.4) 1.1.1";
   global.issueTrackingUrl = "github.com/rpelaez/Jira-Issue-Card-Printer";
 
   global.isDev = document.currentScript == null;
@@ -734,7 +734,7 @@
           issueData.hasAttachment = data.fields.attachment.length > 0;
           issueData.estimate = data.fields.storyPoints;
           issueData.labels = data.fields.labels.toString();
-          issueData.components = data.fields.components.name.toString();
+          issueData.components = data.fields.components["name"].toString();
 
           if (data.fields.parent) {
             promises.push(module.getIssueData(data.fields.parent.key).then(function(data) {
@@ -1282,8 +1282,8 @@
      }
       .issue-reporter {
        position: absolute;
-       top: -6rem;
-       right: 0rem;
+       top: 0rem;
+       right: 5rem;
        width: 2.2rem;
        height: 2.2rem;
        border-radius: 50%;
