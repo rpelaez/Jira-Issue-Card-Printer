@@ -302,7 +302,7 @@
 
     //Labels
     if (data.labels) {
-      card.find(".issue-labels").text(data.estimate);
+      card.find(".issue-labels").text(data.labels);
     } else {
       card.find(".issue-labels").remove();
     }
