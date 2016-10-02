@@ -7,7 +7,7 @@
   }
 
   var global = {};
-  global.version = "(4.7.4) 1.2.1";
+  global.version = "(4.7.4) 1.3.1";
   global.issueTrackingUrl = "github.com/rpelaez/Jira-Issue-Card-Printer";
 
   global.isDev = document.currentScript == null;
@@ -978,9 +978,9 @@
          </div>
          <div class="card-header">
            <div class="author">
-             <span>qoomon.com</span>
+             <span>Qoomon.com & MrAddon.com</span>
              <br>
-             <span>©BengtBrodersen</span>
+             <span>©BengtBrodersen/®RaulPelaez</span>
            </div>
            <div class="issue-id badge"></div>
            <div class="issue-id-fadeout"></div>
