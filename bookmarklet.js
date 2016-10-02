@@ -7,7 +7,7 @@
   }
 
   var global = {};
-  global.version = "(4.7.4) 1.5.1";
+  global.version = "1.6.1 (4.7.4)";
   global.issueTrackingUrl = "github.com/rpelaez/Jira-Issue-Card-Printer";
 
   global.isDev = document.currentScript == null;
@@ -97,9 +97,9 @@
     // render cards
     promises.push(renderCards(issueKeyList));
 
-    $("#card-print-dialog-title", global.appFrame.document).text("Issue Card Printer " + global.version + " - Loading issues...");
+    $("#card-print-dialog-title", global.appFrame.document).text("Issue Card Printer for JIRA " + global.version + " - Loading issues...");
     return Promise.all(promises).then(function() {
-      $("#card-print-dialog-title", global.appFrame.document).text("Issue Card Printer " + global.version);
+      $("#card-print-dialog-title", global.appFrame.document).text("Issue Card Printer for JIRA " + global.version);
     });
   }
 
@@ -1405,12 +1405,12 @@
      <div id="card-print-overlay">
        <div id="card-print-dialog">
          <div id="card-print-dialog-header">
-           <div id="card-print-dialog-title">Card Printer</div>
+           <div id="card-print-dialog-title">Issue Card Printer for JIRA</div>
            <div id="info">
-             <label id="info-line"><b>MrAddon®</b></label>
+             <label id="info-line"><b></b></label>
              <div id="report-issue" class="ui-element button" >Support</div>
-             <div id="about" class="ui-element button" >MrAddon</div>
-             <div id="qoomon" class="ui-element button" >Qoomon</div>
+             <div id="about" class="ui-element button" >MrAddon®</div>
+             <div id="qoomon" class="ui-element button" >Qoomon©</div>
            </div>
          </div>
          <div id="card-print-dialog-content">
