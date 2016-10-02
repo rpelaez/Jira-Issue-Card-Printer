@@ -920,9 +920,9 @@
          </div>
          <div class="card-header">
            <div class="author">
-             <span>qoomon.com</span>
+             <span>MrAddon.com® based on</span>
              <br>
-             <span>©BengtBrodersen</span>
+             <span>qoomon.com ©BengtBrodersen</span>
            </div>
            <div class="issue-id badge"></div>
            <div class="issue-id-fadeout"></div>
@@ -940,7 +940,7 @@
            <div class="issue-epic-box badge">
              <span class="issue-epic-id"></span><br>
              <span class="issue-epic-name"></span>
-             <span class="issue-labels"></span>
+             Label:<span class="issue-labels"></span>
            </div>
          </div>
        </div>
