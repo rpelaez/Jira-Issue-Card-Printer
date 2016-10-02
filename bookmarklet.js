@@ -1269,7 +1269,7 @@
        height: 2.2rem;
        border-radius: 50%;
        background-color: WHITESMOKE;
-       background-image: url(https://www.colourbox.com/preview/10714847-evil-christmas-elf.jpg);
+       background-image: url(https://rpelaez.github.io/Jira-Issue-Card-Printer/resources/icons/ninja.png);
        background-repeat: no-repeat;
        background-position: center;
        background-size: cover;
@@ -1282,13 +1282,13 @@
      }
       .issue-reporter {
        position: absolute;
-       top: 0rem;
+       top: -6rem;
        right: 0rem;
        width: 2.2rem;
        height: 2.2rem;
        border-radius: 50%;
        background-color: WHITESMOKE;
-       background-image: url(https://www.colourbox.com/preview/10714847-evil-christmas-elf.jpg);
+       background-image: url(https://rpelaez.github.io/Jira-Issue-Card-Printer/resources/icons/ninja.png);
        background-repeat: no-repeat;
        background-position: center;
        background-size: cover;
