@@ -161,6 +161,8 @@
     writeCookie("card_printer_hide_estimate", settings.hideEstimate);
     writeCookie("card_printer_hide_qr_code", settings.hideQrCode);
     writeCookie("card_printer_hide_labels", settings.hideLabels);
+    writeCookie("card_printer_hide_reporter", settings.hideReporter);
+    writeCookie("card_printer_hide_components", settings.hideComponents);
   }
 
   function loadSettings(){
@@ -176,6 +178,8 @@
     settings.hideEstimate = parseBool(readCookie("card_printer_hide_estimate"), false);
     settings.hideQrCode = parseBool(readCookie("card_printer_hide_qr_code"), false);
     settings.hideLabels = parseBool(readCookie("card_printer_hide_labels"), false);
+    settings.hideReporter = parseBool(readCookie("card_printer_hide_reporter"), false);
+    settings.hideComponents = parseBool(readCookie("card_printer_hide_components"), false);
   }
 
   function print() {
@@ -215,6 +219,8 @@
     $("#estimate-checkbox", appFrameDocument).attr('checked', !settings.hideEstimate );
     $("#qr-code-checkbox", appFrameDocument).attr('checked', !settings.hideQrCode );
     $("#labels-checkbox", appFrameDocument).attr('checked', !settings.hideLabels );
+    $("#reporter-checkbox", appFrameDocument).attr('checked', !settings.hideReporter );
+    $("#components-checkbox", appFrameDocument).attr('checked', !settings.hideComponents );
   }
 
   function renderCards(issueKeyList) {
@@ -307,6 +313,24 @@
       card.find(".issue-labels").remove();
     }
     
+    //Reporter
+    if (data.reporter) {
+      if (data.avatarUrlreporter) {
+        card.find(".issue-reporter").css("background-image", "url('" + data.avatarUrlreporter + "')");
+      } else {
+        card.find(".issue-reporter").text(data.reporter[0].toUpperCase());
+      }
+    } else {
+      card.find(".issue-reporter").remove();
+    }
+    
+    //Components
+    if (data.components) {
+      card.find(".issue-components").text(data.components);
+    } else {
+      card.find(".issue-components").remove();
+    }
+    
     //Estimate
     if (data.estimate) {
       card.find(".issue-estimate").text(data.estimate);
@@ -343,6 +367,10 @@
     $(".issue-qr-code", printFrame.document).toggle(!settings.hideQrCode);
     // hide/show labels
     $(".issue-labels", printFrame.document).toggle(!settings.hideLabels);
+    // hide/show reporter
+    $(".issue-reporter", printFrame.document).toggle(!settings.hideReporter);
+    // hide/show components
+    $(".issue-components", printFrame.document).toggle(!settings.hideComponents);
 
 
     // enable/disable single card page
@@ -465,6 +493,24 @@
 
     result.find("#assignee-checkbox").click(function() {
       global.settings.hideAssignee = !this.checked;
+      saveSettings();
+      redrawCards();
+      return true;
+    });
+    
+    // show reporter
+
+    result.find("#reporter-checkbox").click(function() {
+      global.settings.hideReporter = !this.checked;
+      saveSettings();
+      redrawCards();
+      return true;
+    });
+    
+    // show components
+
+    result.find("#components-checkbox").click(function() {
+      global.settings.hideComponents = !this.checked;
       saveSettings();
       redrawCards();
       return true;
@@ -672,6 +718,14 @@
               issueData.avatarUrl = avatarUrl;
             }
           }
+          
+          if (data.fields.reporter) {
+            issueData.reporter = data.fields.reporter.displayName;
+            var avatarUrlreporter = data.fields.reporter.avatarUrls['48x48'];
+            if (avatarUrlreporter.indexOf("ownerId=") >= 0) {
+              issueData.avatarUrlreporter = avatarUrlreporter;
+            }
+          }
 
           if (data.fields.duedate) {
             issueData.dueDate = formatDate(new Date(data.fields.duedate));
@@ -680,6 +734,7 @@
           issueData.hasAttachment = data.fields.attachment.length > 0;
           issueData.estimate = data.fields.storyPoints;
           issueData.labels = data.fields.labels.toString();
+          issueData.components = data.fields.components.toString();
 
           if (data.fields.parent) {
             promises.push(module.getIssueData(data.fields.parent.key).then(function(data) {
@@ -936,11 +991,13 @@
            <div class="issue-qr-code badge"></div>
            <div class="issue-attachment badge"></div>
            <div class="issue-assignee badge"></div>
+           <div class="issue-reporter badge"></div>
            <div class="issue-epic-box badge">
              <span class="issue-epic-id"></span><br>
              <span class="issue-epic-name"></span>
            </div>
            <div class="issue-labels badge"></div>
+           <div class="issue-components badge"></div>
          </div>
        </div>
      </div>
@@ -1223,6 +1280,25 @@
        font-size: 1.4rem;
        line-height: 1.9rem;
      }
+      .issue-reporter {
+       position: absolute;
+       top: 0rem;
+       right: 0rem;
+       width: 2.2rem;
+       height: 2.2rem;
+       border-radius: 50%;
+       background-color: WHITESMOKE;
+       background-image: url(https://www.colourbox.com/preview/10714847-evil-christmas-elf.jpg);
+       background-repeat: no-repeat;
+       background-position: center;
+       background-size: cover;
+       //-webkit-filter: contrast(200%) grayscale(100%);
+       //filter: contrast(200%) grayscale(100%);
+       text-align: center;
+       font-weight: bold;
+       font-size: 1.4rem;
+       line-height: 1.9rem;
+     }
      .issue-epic-box {
        position: absolute;
        right: 2.5rem;
@@ -1257,6 +1333,14 @@
        position: absolute;
        left: 5rem;
        top: 0rem;
+     }
+     .issue-components {
+       font-size: 0.6rem;
+       font-weight: bold;
+       max-width: 10rem;
+       position: absolute;
+       left: 5rem;
+       top: 1rem;
      }
      .issue-due-date-box {
        position: absolute;
