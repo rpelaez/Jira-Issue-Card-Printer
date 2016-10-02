@@ -730,7 +730,7 @@
               }
               
               //lufthansa specific field mapping
-              // if(/.*trackspace.lhsystems.com/g.test(window.location.hostname)){
+               if(/.*trackspace.lhsystems.com/g.test(window.location.hostname)){
                 if (key == 'Xcustomfield_10006'){
                   fieldName = 'epicLink'
                 }
@@ -744,7 +744,7 @@
                  fieldName ='dueDate'
                  fieldValue = formatDate(new Date(fieldValue));
                 }
-              //}
+              }
               
               //console.log("add new field: " + fieldName + " with value from " + key);
               responseData.fields[fieldName] = fieldValue;
