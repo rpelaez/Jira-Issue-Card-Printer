@@ -1326,7 +1326,7 @@
                <form style="float: left;" oninput="amount.value=parseFloat(scaleRange.value).toFixed(1)">
                  <input id="scaleRange" type="range" min="-1.0" max="1.0" step="0.1" value="0.0" style="float: left; width: 70px; position: relative;
          top: -2px;" />
-                 <label>Scale</label>
+                 <label>Zoom</label>
                  <output style="float: left; width: 22px; margin-left:2px;" name="amount" for="scaleRange"></output>
                </form>
 
@@ -1339,7 +1339,7 @@
              <div class="ui-element checkbox" style="float: left;">
                <input id="description-checkbox" type="checkbox"/>
                <label for="description-checkbox"></label>
-               <label for="description-checkbo">Description</label>
+               <label for="description-checkbo">Desc</label>
              </div>
              <div class="ui-element checkbox" style="float: left;">
                <input id="assignee-checkbox" type="checkbox"/>
@@ -1349,7 +1349,7 @@
              <div class="ui-element checkbox" style="float: left;">
                <input id="due-date-checkbox" type="checkbox"/>
                <label for="due-date-checkbox"></label>
-               <label for="due-date-checkbox">Due Date</label>
+               <label for="due-date-checkbox">DueDate</label>
              </div>
              <div class="ui-element checkbox" style="float: left;">
                <input id="estimate-checkbox" type="checkbox"/>
