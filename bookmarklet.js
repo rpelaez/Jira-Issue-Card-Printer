@@ -1407,7 +1407,7 @@
          <div id="card-print-dialog-header">
            <div id="card-print-dialog-title">Card Printer</div>
            <div id="info">
-             <label id="info-line"><b>MrAddon® Issue Card Printer for Jira</b></label>
+             <label id="info-line"><b>MrAddon®</b></label>
              <div id="report-issue" class="ui-element button" >Support</div>
              <div id="about" class="ui-element button" >MrAddon</div>
              <div id="qoomon" class="ui-element button" >Qoomon</div>
