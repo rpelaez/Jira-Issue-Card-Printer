@@ -922,7 +922,7 @@
            <div class="author">
              <span>MrAddon.com® based on</span>
              <br>
-             <span>qoomon.com ©BengtBrodersen</span>
+             <span>qoomon.com ©BengtBrodersen code</span>
            </div>
            <div class="issue-id badge"></div>
            <div class="issue-id-fadeout"></div>
