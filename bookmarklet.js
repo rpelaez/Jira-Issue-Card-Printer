@@ -664,8 +664,7 @@
           issueData.type = data.fields.issuetype.name.toLowerCase();
           issueData.summary = data.fields.summary;
           issueData.description = data.renderedFields.description;
-          issueData.labels = data.fields.labels;
-
+          
           if (data.fields.assignee) {
             issueData.assignee = data.fields.assignee.displayName;
             var avatarUrl = data.fields.assignee.avatarUrls['48x48'];
@@ -680,7 +679,7 @@
 
           issueData.hasAttachment = data.fields.attachment.length > 0;
           issueData.estimate = data.fields.storyPoints;
-          issueData.labels = data.fields.labels;
+          issueData.labels = data.fields.labels.toString();
 
           if (data.fields.parent) {
             promises.push(module.getIssueData(data.fields.parent.key).then(function(data) {
