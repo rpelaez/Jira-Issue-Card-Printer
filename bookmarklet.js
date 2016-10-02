@@ -160,6 +160,7 @@
     writeCookie("card_printer_hide_due_date", settings.hideDueDate);
     writeCookie("card_printer_hide_estimate", settings.hideEstimate);
     writeCookie("card_printer_hide_qr_code", settings.hideQrCode);
+    writeCookie("card_printer_hide_labels", settings.hideLabels);
   }
 
   function loadSettings(){
@@ -174,6 +175,7 @@
     settings.hideDueDate = parseBool(readCookie("card_printer_hide_due_date"), false);
     settings.hideEstimate = parseBool(readCookie("card_printer_hide_estimate"), false);
     settings.hideQrCode = parseBool(readCookie("card_printer_hide_qr_code"), false);
+    settings.hideLabels = parseBool(readCookie("card_printer_hide_labels"), false);
   }
 
   function print() {
@@ -212,6 +214,7 @@
     $("#due-date-checkbox", appFrameDocument).attr('checked', !settings.hideDueDate );
     $("#estimate-checkbox", appFrameDocument).attr('checked', !settings.hideEstimate );
     $("#qr-code-checkbox", appFrameDocument).attr('checked', !settings.hideQrCode );
+    $("#labels-checkbox", appFrameDocument).attr('checked', !settings.hideLabels );
   }
 
   function renderCards(issueKeyList) {
@@ -297,6 +300,13 @@
       card.find('.issue-attachment').remove();
     }
 
+    //Labels
+    if (data.labels) {
+      card.find(".issue-labels").text(data.estimate);
+    } else {
+      card.find(".issue-labels").remove();
+    }
+    
     //Estimate
     if (data.estimate) {
       card.find(".issue-estimate").text(data.estimate);
@@ -331,6 +341,9 @@
     $(".issue-estimate", printFrame.document).toggle(!settings.hideEstimate);
     // hide/show cr code
     $(".issue-qr-code", printFrame.document).toggle(!settings.hideQrCode);
+    // hide/show labels
+    $(".issue-labels", printFrame.document).toggle(!settings.hideLabels);
+
 
     // enable/disable single card page
     $(".card", printFrame.document).css({ 'page-break-after' : '', 'float' : '', 'margin-bottom': '' });
@@ -470,6 +483,15 @@
 
     result.find("#estimate-checkbox").click(function() {
       global.settings.hideEstimate = !this.checked;
+      saveSettings();
+      redrawCards();
+      return true;
+    });
+
+	// show labels
+
+    result.find("#labels-checkbox").click(function() {
+      global.settings.hideLabels = !this.checked;
       saveSettings();
       redrawCards();
       return true;
@@ -735,289 +757,6 @@
     }({}));
     issueTrackers.push(jiraFunctions);
 
-    var youTrackFunctions = (function(module) {
-      module.name = "YouTrack";
-
-      module.isEligible = function(){
-        return /.*myjetbrains.com\/youtrack\/.*/g.test(document.URL) || /.*youtrack.jetbrains.com\/.*/g.test(document.URL);
-      }
-
-      module.getSelectedIssueKeyList = function() {
-        //Detail View
-        if (/.*\/issue\/.*/g.test(document.URL)) {
-          return [document.URL.match(/.*\/issue\/([^?]*).*/)[1]];
-        }
-
-        // Agile Board
-        if (/.*\/rest\/agile.*/g.test(document.URL)) {
-          return $('div.sb-task-focused').map(function() {
-            return $(this).attr('id');
-          });
-        }
-
-        return [];
-      };
-
-      module.getCardData = function(issueKey) {
-        var promises = [];
-        var issueData = {};
-
-        promises.push(module.getIssueData(issueKey).then(function(data) {
-          issueData.key = data.id;
-          issueData.type = data.field.type[0];
-          issueData.summary = data.field.summary;
-          issueData.description = data.field.description;
-
-          if (data.field.assignee) {
-            issueData.assignee = data.field.assignee[0].fullName;
-          }
-
-          if (data.field.attachments) {
-            issueData.hasAttachment = data.field.attachments.length > 0;
-          }
-
-          issueData.url = window.location.origin + "/youtrack/issue/" + issueData.key;
-
-
-        }));
-
-        return Promise.all(promises).then(function(results){return issueData;});
-      };
-
-      module.getIssueData = function(issueKey) {
-        var url = '/youtrack/rest/issue/' + issueKey + '?';
-        console.log("IssueUrl: " + url);
-        //console.log("Issue: " + issueKey + " Loading...");
-        return httpGetJSON(url).then(function(responseData) {
-          //console.log("Issue: " + issueKey + " Loaded!");
-          $.each(responseData.field, function(key, value) {
-            // add fields with field names
-            var fieldName = value.name.toCamelCase();
-            //console.log("add new field: " + newFieldId + " with value from " + fieldName);
-            responseData.field[fieldName] = value.value;
-          });
-          return responseData;
-        });
-      };
-
-      return module;
-    }({}));
-    issueTrackers.push(youTrackFunctions);
-
-    var pivotalTrackerFunctions = (function(module) {
-      module.name = "PivotalTracker";
-
-      module.isEligible = function(){
-        return /.*pivotaltracker.com\/.*/g.test(document.URL);
-      }
-
-      module.getSelectedIssueKeyList = function() {
-        //Single Story
-        if (/.*\/stories\/.*/g.test(document.URL)) {
-          return [document.URL.match(/.*\/stories\/([^?]*).*/)[1]];
-        }
-
-        // Project Board
-        if (/.*\/projects\/.*/g.test(document.URL)) {
-          return $('.story[data-id]:has(.selector.selected)').map(function() {
-            return $(this).attr('data-id');
-          });
-        }
-
-        // Workspace Board
-        if (/.*\/workspaces\/.*/g.test(document.URL)) {
-          return $('.story[data-id]:has(.selector.selected)').map(function() {
-            return $(this).attr('data-id');
-          });
-        }
-
-        return [];
-      };
-
-      module.getCardData = function(issueKey) {
-        var promises = [];
-        var issueData = {};
-
-        promises.push(module.getIssueData(issueKey).then(function(data) {
-          issueData.key = data.id;
-          issueData.type = data.kind.toLowerCase();
-          issueData.summary = data.name;
-          issueData.description = data.description;
-
-          if (data.owned_by && data.owned_by.length > 0) {
-            issueData.assignee = data.owner_ids[0].name;
-          }
-
-          if (data.deadline) {
-            issueData.dueDate = formatDate(new Date(data.deadline));
-          }
-
-          // TODO
-          issueData.hasAttachment = false;
-          issueData.estimate = data.estimate;
-
-          issueData.url = data.url;
-        }));
-
-        return Promise.all(promises).then(function(results){return issueData;});
-      };
-
-      module.getIssueData = function(issueKey) {
-        //http://www.pivotaltracker.com/help/api
-        var url = 'https://www.pivotaltracker.com/services/v5/stories/' + issueKey + "?fields=name,kind,description,story_type,owned_by(name),comments(file_attachments(kind)),estimate,deadline";
-        console.log("IssueUrl: " + url);
-        //console.log("Issue: " + issueKey + " Loading...");
-        return httpGetJSON(url);
-      };
-
-      return module;
-    }({}));
-    issueTrackers.push(pivotalTrackerFunctions);
-
-    var trelloFunctions = (function(module) {
-      module.name = "trello";
-
-      module.isEligible = function(){
-        return /.*trello.com\/.*/g.test(document.URL);
-      }
-
-      module.getSelectedIssueKeyList = function() {
-        //Board View
-        if (/.*\/b\/.*/g.test(document.URL)) {
-          // open card composer
-          var issueKeys = $( ".card-composer").parent().find(".list-card > .list-card-details > .list-card-title").map(function() {
-            return $(this).attr("href").match(/.*\/c\/([^/]*).*/)[1];
-          });
-          
-          //read only board
-          
-          var issueKeys2 = $( "textarea.list-header-name.is-editing" ).parent().parent().find(".list-cards > .list-card > .list-card-details > .list-card-title").map(function() {
-            return $(this).attr("href").match(/.*\/c\/([^/]*).*/)[1];
-          })
-
-          return jQuery.merge(issueKeys,issueKeys2 );
-        }
-        
-        //Card View
-        if (/.*\/c\/.*/g.test(document.URL)) {
-          return [document.URL.match(/.*\/c\/([^/]*).*/)[1]];
-        }
-        
-        return [];
-      };
-
-      module.getCardData = function(issueKey, callback) {
-        var promises = [];
-        var issueData = {};
-
-        promises.push(module.getIssueData(issueKey).then(function(data) {
-          issueData.key = data.idShort;
-
-          // TODO get type from label name
-          issueData.type = 'default';
-
-          issueData.summary = data.name;
-          issueData.description = data.desc;
-
-          if (data.members && data.members.length > 0) {
-            issueData.assignee = data.members[0].fullName;
-            issueData.avatarUrl = "https://trello-avatars.s3.amazonaws.com/" + data.members[0].avatarHash + "/170.png";
-          }
-
-          if (data.due) {
-            issueData.dueDate = formatDate(new Date(data.due));
-          }
-
-          issueData.hasAttachment = data.attachments > 0;
-          issueData.url = data.shortUrl;
-        }));
-
-        return Promise.all(promises).then(function(results){return issueData;});
-      };
-
-      module.getIssueData = function(issueKey) {
-        var url = "/1/cards/" + issueKey + "?members=true";
-        console.log("IssueUrl: " + url);
-        //console.log("Issue: " + issueKey + " Loading...");
-        return httpGetJSON(url);
-      };
-
-      return module;
-    }({}));
-    issueTrackers.push(trelloFunctions);
-
-    var mingleFunctions = (function(module) {
-      module.name = "mingle";
-
-      module.isEligible = function(){
-        return /.*mingle.thoughtworks.com\/.*/g.test(document.URL);
-      }
-
-      module.getSelectedIssueKeyList = function() {
-        //Bord View - /projects/<project_name>/cards/grid
-        if (/.*\/projects\/[^/]*\/cards\/grid(\?.*)?/g.test(document.URL)) {
-          var project = document.URL.match(/.*\/projects\/([^/]*).*/)[1];
-          var number = $(document).find('#card_show_lightbox_content > div > form[data-card-number]').attr('data-card-number');
-          return [project + "-" + number];
-        }
-
-        //Card View - /projects/<project_name>/cards/<card_number>
-        if (/.*\/projects\/[^/]*\/cards\/\d+(\?.*)?/g.test(document.URL)) {
-          var project = document.URL.match(/.*\/projects\/([^/]*).*/)[1];
-          var number = document.URL.match(/.*\/projects\/[^/]*\/cards\/(\d+)(\?.*)?/)[1];
-          return [project + "-" + number];
-        }
-
-        return [];
-      };
-
-      module.getCardData = function(issueKey, callback) {
-        var promises = [];
-        var issueData = {};
-
-        promises.push(module.getIssueData(issueKey).then(function(data) {
-          data = $(data.documentElement)
-
-          issueData.key = data.find('card > number')[0].textContent;
-          issueData.type = data.find('card > card_type > name')[0].textContent.toLowerCase();
-          issueData.summary = data.find('card > name')[0].textContent;
-          issueData.description = data.find('card > description')[0].innerHTML;  // TODO use data.find('card > rendered_description')[0].attr('url');
-
-          if(data.find('card > properties > property > name:contains(Owner) ~ value > name').length > 0){
-            issueData.assignee = data.find('card > properties > property > name:contains(Owner) ~ value > name')[0].textContent;
-            // TODOissueData.avatarUrl
-          }
-
-          // n/a issueData.dueDate = formatDate(new Date(dueDate));
-          // n/a issueData.hasAttachment = data.fields.attachment.length > 0;
-
-          if(data.find('card > properties > property > name:contains(Estimate) ~ value').length > 0){
-            issueData.estimate = data.find('card > properties > property > name:contains(Estimate) ~ value')[0].textContent;
-          }
-
-          // n/a issueData.superIssue
-
-          var projectIdentifier = data.find('card > project > identifier')[0].textContent;
-          var cardNumber = data.find('card > number')[0].textContent
-          issueData.url = "https://" + document.location.hostname + "/projects/" + projectIdentifier + "/cards/" + cardNumber;
-        }));
-
-        return Promise.all(promises).then(function(results){return issueData;});
-      };
-
-      module.getIssueData = function(issueKey) {
-        var issueKeySplit = issueKey.split('-');
-        var project = issueKeySplit[0];
-        var number = issueKeySplit[1];
-        var url = "/api/v2/projects/" + project + "/cards/" + number + ".xml";
-        console.log("IssueUrl: " + url);
-        //console.log("Issue: " + issueKey + " Loading...");
-        return httpGet(url);
-      };
-
-      return module;
-    }({}));
-    issueTrackers.push(mingleFunctions);
 
     return issueTrackers;
   }
@@ -1334,6 +1073,10 @@
        font-weight: bold;
        font-size: 0.9rem;
      }
+     .issue-labels {
+       font-weight: bold;
+       font-size: 0.9rem;
+     }
      .issue-description {
        margin-top: 0.1rem;
        display: block;
@@ -1612,6 +1355,11 @@
                <input id="estimate-checkbox" type="checkbox"/>
                <label for="estimate-checkbox"></label>
                <label for="estimate-checkbox">Estimate</label>
+             </div>
+             <div class="ui-element checkbox" style="float: left;">
+               <input id="labels-checkbox" type="checkbox"/>
+               <label for="labels-checkbox"></label>
+               <label for="labels-checkbox">Labels</label>
              </div>
              <div class="ui-element checkbox" style="float: left;">
                <input id="qr-code-checkbox" type="checkbox"/>
