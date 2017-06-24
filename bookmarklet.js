@@ -7,7 +7,7 @@
   }
 
   var global = {};
-  global.version = "1.1 (4.7.4)";
+  global.version = "1.2 (4.7.4)";
   global.issueTrackingUrl = "github.com/rpelaez/Jira-Issue-Card-Printer";
 
   global.isDev = document.currentScript == null;
