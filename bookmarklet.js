@@ -7,8 +7,8 @@
   }
 
   var global = {};
-  global.version = "1.1 (4.7.4)";
-  global.issueTrackingUrl = "github.com/rpelaez/Jira-Issue-Card-Printer";
+  global.version = "2.2";
+  global.issueTrackingUrl = "github.com/rpelaez/MrAddonIssueCardPrinterPRO";
 
   global.isDev = document.currentScript == null;
 
@@ -154,6 +154,10 @@
     writeCookie("card_printer_row_count", settings.rowCount);
     writeCookie("card_printer_column_count", settings.colCount);
 
+	writeCookie("card_printer_s1", settings.s1);
+	writeCookie("card_printer_s2", settings.s2);
+	writeCookie("card_printer_s3", settings.s3);
+	writeCookie("card_printer_set_header", settings.setHeader);
     writeCookie("card_printer_single_card_page", settings.singleCardPage);
     writeCookie("card_printer_hide_description", settings.hideDescription);
     writeCookie("card_printer_hide_assignee", settings.hideAssignee);
@@ -171,6 +175,10 @@
     settings.rowCount = parseInt(readCookie("card_printer_row_count")) || 2;
     settings.colCount = parseInt(readCookie("card_printer_column_count")) || 1;
 
+	settings.s1 = readCookie("card_printer_s1");
+	settings.s2 = readCookie("card_printer_s2");
+	settings.s3 = readCookie("card_printer_s3");
+	settings.setHeader = readCookie("card_printer_set_header");
     settings.singleCardPage = parseBool(readCookie("card_printer_single_card_page"), true );
     settings.hideDescription = parseBool(readCookie("card_printer_hide_description"), false);
     settings.hideAssignee = parseBool(readCookie("card_printer_hide_assignee"), false);
@@ -267,6 +275,12 @@
   }
 
   function fillCard(card, data) {
+  
+   	//Header
+   	if (global.settings.setHeader != "" &&  global.settings.setHeader != null &&  global.settings.setHeader != "null") {
+    	card.find('.author').text(global.settings.setHeader);
+    }
+
     //Key
     card.find('.issue-id').text(data.key);
 
@@ -345,7 +359,27 @@
     } else {
       card.find(".issue-epic-box").remove();
     }
-
+    
+    //Special Customfields
+    //S1
+   		if (data.s1) {
+    		card.find('.issue-s1').text(data.s1);
+    	} else {
+      		card.find(".issue-s1").remove();
+    	}
+    //S2
+   		if (data.s2) {
+    		card.find('.issue-s2').text(data.s2);
+    	} else {
+      		card.find(".issue-s2").remove();
+    	}
+    //S3
+   		if (data.s3) {
+    		card.find('.issue-s3').text(data.s3);
+    	} else {
+      		card.find(".issue-s3").remove();
+    	}
+    
     //QR-Code
     var qrCodeUrl = 'https://chart.googleapis.com/chart?cht=qr&chs=256x256&chld=L|1&chl=' + encodeURIComponent(data.url);
     card.find(".issue-qr-code").css("background-image", "url('" + qrCodeUrl + "')");
@@ -371,8 +405,7 @@
     $(".issue-reporter", printFrame.document).toggle(!settings.hideReporter);
     // hide/show components
     $(".issue-components", printFrame.document).toggle(!settings.hideComponents);
-
-
+	
     // enable/disable single card page
     $(".card", printFrame.document).css({ 'page-break-after' : '', 'float' : '', 'margin-bottom': '' });
     if (settings.singleCardPage) {
@@ -461,6 +494,34 @@
     var result = $('<div/>').html(global.printPreviewHtml).contents();
 
     // info
+    result.find("#set-header").click(function(event) { 
+      global.settings.setHeader = prompt("Write the header. Let empty or cancel to reset.", global.settings.setHeader);;
+      saveSettings();
+      main();
+      return true;
+    });
+    
+    result.find("#set-s1").click(function(event) { 
+      global.settings.s1 = prompt("Actual Value:'" + global.settings.s1 + "'. Now you can show customfields, just write 'customfield_xxx'. Let empty or cancel to reset.",global.settings.s1);;
+      saveSettings();
+      main();
+      return true;
+    });
+    
+    result.find("#set-s2").click(function(event) { 
+      global.settings.s2 = prompt("Actual Value:'" + global.settings.s2 + "'. Now you can show customfields, just write 'customfield_xxx'. Let empty or cancel to reset.",global.settings.s2);;
+      saveSettings();
+      main();
+      return true;
+    });
+    
+    result.find("#set-s3").click(function(event) { 
+      global.settings.s3 = prompt("Actual Value:'" + global.settings.s3 + "'. Now you can show customfields, just write 'customfield_xxx'. Let empty or cancel to reset.",global.settings.s3);;
+      saveSettings();
+      main();
+      return true;
+    });
+    
     result.find("#report-issue").click(function(event) {
       window.open('https://jirasupport.atlassian.net/servicedesk/customer/portal/1');
       return false;
@@ -746,6 +807,7 @@
           	issueData.components = issueData.components + "," + data.fields.components[1].name;
           } 
 
+		  
           if (data.fields.parent) {
             promises.push(module.getIssueData(data.fields.parent.key).then(function(data) {
               issueData.superIssue = {};
@@ -762,6 +824,17 @@
 
           issueData.url = module.baseUrl() + "/browse/" + issueData.key;
 
+		  //alert( data.fields.s1 + " o " + data.fields.s2 + " o " + data.fields.s3 );
+		  if (global.settings.s1 != "" &&  global.settings.s1 != null &&  global.settings.s1 != "null") {
+		  	issueData.s1 = data.fields.s1
+		  }
+		  if (global.settings.s2 != "" &&  global.settings.s2 != null &&  global.settings.s2 != "null") {
+		  	issueData.s2 = data.fields.s2
+		  }
+		  if (global.settings.s3 != "" &&  global.settings.s3 != null &&  global.settings.s3 != "null") {
+		  	issueData.s3 = data.fields.s3
+		  }
+		  
           return Promise.all(promises);
         }));
 
@@ -780,6 +853,27 @@
             if (key.startsWith("customfield_")) {
               var fieldName = value.toCamelCase();
               var fieldValue = responseData.fields[key];
+              
+              //Switch field s1
+              if (global.settings.s1 != "" &&  global.settings.s1 != null &&  global.settings.s1 != "null") {
+   			 	if (key == global.settings.s1){
+                  fieldName = 's1'
+                }
+    		  }
+    		  
+    		  //Switch field s2
+   			  if (global.settings.s2 != "" &&  global.settings.s2 != null &&  global.settings.s2 != "null") {
+    			if (key == global.settings.s2){
+                  fieldName = 's2'
+                }
+    		  }
+    		  
+    		  //Switch field s3
+   			  if (global.settings.s3 != "" &&  global.settings.s3 != null &&  global.settings.s3 != "null") {
+    			if (key == global.settings.s3){
+                  fieldName = 's3'
+                }
+    		  }
 
               //deposit-solutions specific field mapping
               if(/.*\.deposit-solutions.com/g.test(window.location.hostname)){
@@ -992,6 +1086,9 @@
            <div class="issue-id-fadeout"></div>
            <div class="issue-icon badge" type="loading"></div>
            <div class="issue-estimate badge"></div>
+           <div class="issue-s1 badge"></div>
+           <div class="issue-s2 badge"></div>
+           <div class="issue-s3 badge"></div>
            <div class="issue-due-box">
              <div class="issue-due-date badge"></div>
              <div class="issue-due-icon badge"></div>
@@ -1279,7 +1376,7 @@
        height: 2.2rem;
        border-radius: 50%;
        background-color: WHITESMOKE;
-       background-image: url(https://rpelaez.github.io/Jira-Issue-Card-Printer/resources/icons/ninja.png);
+       //background-image: url(https://rpelaez.github.io/Jira-Issue-Card-Printer/resources/icons/ninja.png);
        background-repeat: no-repeat;
        background-position: center;
        background-size: cover;
@@ -1298,7 +1395,7 @@
        height: 2.2rem;
        border-radius: 50%;
        background-color: WHITESMOKE;
-       background-image: url(https://rpelaez.github.io/Jira-Issue-Card-Printer/resources/icons/ninja.png);
+       //background-image: url(https://rpelaez.github.io/Jira-Issue-Card-Printer/resources/icons/ninja.png);
        background-repeat: no-repeat;
        background-position: center;
        background-size: cover;
@@ -1343,6 +1440,8 @@
        position: absolute;
        left: 5rem;
        top: 0rem;
+       padding-left: 0.2rem;
+       padding-right: 0.2rem;
      }
      .issue-components {
        font-size: 0.6rem;
@@ -1351,6 +1450,38 @@
        position: absolute;
        left: 5rem;
        top: 1rem;
+       padding-left: 0.2rem;
+       padding-right: 0.2rem;
+     }
+     .issue-s1 {
+       font-size: 0.6rem;
+       font-weight: bold;
+       max-width: 10rem;
+       position: absolute;
+       left: 9rem;
+       top: 1rem;
+       padding-left: 0.2rem;
+       padding-right: 0.2rem;
+     }
+     .issue-s2 {
+       font-size: 0.6rem;
+       font-weight: bold;
+       max-width: 10rem;
+       position: absolute;
+       left: 9rem;
+       top: 2rem;
+       padding-left: 0.2rem;
+       padding-right: 0.2rem;
+     }
+     .issue-s3 {
+       font-size: 0.6rem;
+       font-weight: bold;
+       max-width: 10rem;
+       position: absolute;
+       left: 9rem;
+       top: 3rem;
+       padding-left: 0.2rem;
+       padding-right: 0.2rem;
      }
      .issue-due-date-box {
        position: absolute;
@@ -1406,9 +1537,13 @@
      <div id="card-print-overlay">
        <div id="card-print-dialog">
          <div id="card-print-dialog-header">
-           <div id="card-print-dialog-title">Issue Card Printer for JIRA</div>
+           <div id="card-print-dialog-title">Issue Card Printer</div>
            <div id="info">
              <label id="info-line"><b></b></label>
+             <div id="set-header" class="ui-element button" >Header</div>
+             <div id="set-s1" class="ui-element button" >CF.1</div>
+             <div id="set-s2" class="ui-element button" >CF.2</div>
+             <div id="set-s3" class="ui-element button" >CF.3</div>
              <div id="report-issue" class="ui-element button" >Support</div>
              <div id="about" class="ui-element button" >MrAddon®</div>
              <div id="qoomon" class="ui-element button" >Qoomon©</div>
@@ -1586,12 +1721,12 @@
          cursor: pointer;
          background-color: #DEDEDE;
          border: 1px solid #D4D4D4;
-         border-radius: 3px;
+         border-radius: 2px;
          display: inline-block;
          font-size: 13px;
          font-weight: 700;
-         padding: 5.8px 20px;
-         margin: 0px 2px;
+         padding: 0.8px 10px;
+         margin: 0px 1px;
          text-decoration: none;
          text-align: center;
      }
