@@ -533,7 +533,7 @@
     });
     
     result.find("#qoomon").click(function(event) {
-      window.open('http://qoomon.blogspot.com.es/2014/01/jira-issue-card-printer-bookmarklet.html');
+      window.open('http://blog.qoomon.me/2014/01/jira-issue-card-printer-bookmarklet.html');
       return false;
     });
 
@@ -1078,7 +1078,7 @@
          </div>
          <div class="card-header">
            <div class="author">
-             <span>Qoomon.com & MrAddon.com</span>
+             <span>Qoomon.me & MrAddon.com</span>
              <br>
              <span>©BengtBrodersen / ®RaulPelaez</span>
            </div>
